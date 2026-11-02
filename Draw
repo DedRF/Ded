@@ -1,0 +1,73 @@
+
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="healthcare-er" name="ER-диаграмма">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1300" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- СУЩНОСТИ -->
+        <mxCell id="patient" value="&lt;b&gt;ПАЦИЕНТ&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_пациента&lt;br&gt;ФИО&lt;br&gt;Дата рождения&lt;br&gt;Телефон&lt;br&gt;Адрес&lt;br&gt;Номер полиса&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_пользователя" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="230" height="190" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="card" value="&lt;b&gt;МЕДИЦИНСКАЯ КАРТА&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_карты&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_пациента&lt;br&gt;Номер карты&lt;br&gt;Дата создания" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="370" y="100" width="240" height="140" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="visit" value="&lt;b&gt;ПРИЁМ&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_приёма&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_записи&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_карты&lt;br&gt;Жалобы&lt;br&gt;Результаты осмотра" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="760" y="100" width="240" height="160" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="diagnosis" value="&lt;b&gt;ДИАГНОЗ&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_диагноза&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_приёма&lt;br&gt;Название&lt;br&gt;Описание" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="70" width="240" height="140" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="prescription" value="&lt;b&gt;НАЗНАЧЕНИЕ&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_назначения&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_приёма&lt;br&gt;Препарат / процедура&lt;br&gt;Дозировка&lt;br&gt;Рекомендации" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="290" width="240" height="160" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="appointment" value="&lt;b&gt;ЗАПИСЬ НА ПРИЁМ&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_записи&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_пациента&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_врача&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_регистратора&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_расписания&lt;br&gt;Дата и время&lt;br&gt;Статус" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="370" y="430" width="260" height="210" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="doctor" value="&lt;b&gt;ВРАЧ&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_врача&lt;br&gt;ФИО&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_специальности&lt;br&gt;Телефон&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_пользователя" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="430" width="230" height="160" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="specialty" value="&lt;b&gt;СПЕЦИАЛЬНОСТЬ&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_специальности&lt;br&gt;Название специальности" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="780" width="230" height="110" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="schedule" value="&lt;b&gt;РАСПИСАНИЕ&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_расписания&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_врача&lt;br&gt;Дата&lt;br&gt;Время начала&lt;br&gt;Время окончания" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="760" y="480" width="240" height="160" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="registrar" value="&lt;b&gt;РЕГИСТРАТОР&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_регистратора&lt;br&gt;ФИО&lt;br&gt;Телефон&lt;br&gt;Логин&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; ID_пользователя" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="370" y="850" width="240" height="160" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="user" value="&lt;b&gt;ПОЛЬЗОВАТЕЛЬ&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; ID_пользователя&lt;br&gt;Логин&lt;br&gt;Пароль (хэш)&lt;br&gt;Роль" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4472C4;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="760" y="850" width="240" height="130" as="geometry"/>
+        </mxCell>
+
+        <!-- СВЯЗИ -->
+        <mxCell id="e1" value="1 : 1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="patient" target="card"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" value="1 : M" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="patient" target="appointment"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" value="1 : M" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="doctor" target="appointment"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" value="1 : M" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="doctor" target="schedule"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" value="1 : M" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="specialty" target="doctor"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" value="1 : M" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="registrar" target="appointment"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" value="1 : M" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="schedule" target="appointment"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" value="1 : 0..1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="appointment" target="visit"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e9" value="1 : M" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="card" target="visit"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e10" value="1 : M" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="visit" target="diagnosis"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e11" value="1 : M" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="visit" target="prescription"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e12" value="1 : 0..1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="user" target="patient"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e13" value="1 : 0..1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="user" target="doctor"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e14" value="1 : 0..1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4472C4;strokeWidth=2;endArrow=none;startArrow=none;fontSize=12;" edge="1" parent="1" source="user" target="registrar"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
