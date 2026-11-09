@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Лабиринт: один путь</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0; min-height: 100vh;
+        display: flex; align-items: center; justify-content: center;
+        background: #1e1e2f; font-family: Arial, sans-serif; color: #fff;
+    }
+    #container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    #maze {
+        position: relative;
+        background: #2a2a40;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    #thingie {
+        position: absolute;
+        width: 14px; height: 14px;
+        display: flex; align-items: center; justify-content: center;
+        background: #3a86ff; border-radius: 50%;
+        font-size: 7px; font-weight: bold; color: #fff; z-index: 2;
+    }
+    #home {
+        position: absolute;
+        width: 22px; height: 22px;
+        display: flex; align-items: center; justify-content: center;
+        background: #2ecc71; border-radius: 50%;
+        font-size: 8px; font-weight: bold; color: #fff; z-index: 1;
+    }
+    .emo { pointer-events: none; user-select: none; }
+    .wall { position: absolute; background: #ff4757; border-radius: 1px; }
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 56px);
+        grid-template-rows: repeat(2, 56px);
+        gap: 8px; justify-content: center;
+    }
+    #bu { grid-column: 2; grid-row: 1; }
+    #bl { grid-column: 1; grid-row: 2; }
+    #bd { grid-column: 2; grid-row: 2; }
+    #br { grid-column: 3; grid-row: 2; }
+    .btn {
+        width: 56px; height: 56px;
+        background: #444; color: #fff; border: none; border-radius: 8px;
+        font-size: 22px; cursor: pointer; transition: background 0.15s;
+    }
+    .btn:hover  { background: #5a5a7a; }
+    .btn:active { background: #3a86ff; }
+    #status { font-size: 13px; color: #aaa; }
+</style>
+</head>
+<body>
+<div id="container">
+    <div class="mbox">
+        <div id="maze">
+            <div id="thingie"><span class="emo">s</span></div>
+            <div id="home"><span class="emo">f</span></div>
+        </div>
+    </div>
+    <div class="controls">
+        <div class="buttons">
+            <button class="btn" id="bu">↑</button>
+            <button class="btn" id="bl">←</button>
+            <button class="btn" id="bd">↓</button>
+            <button class="btn" id="br">→</button>
+        </div>
+    </div>
+    <div id="status">Новый лабиринт при каждом запуске. Перезагрузите страницу, чтобы сменить.</div>
+</div>
+
+<script>
+    const maze   = document.getElementById('maze');
+    const player = document.getElementById('thingie');
+    const home   = document.getElementById('home');
+
+    const COLS = 15, ROWS = 11;
+    const CELL = 36;
+    const WALL = 2;
+    const PLAYER = 14;
+    const STEP = 6;
+
+    // ---- Генерация лабиринта DFS (recursive backtracker) ----
+    // Каждая клетка: { walls: {top, right, bottom, left} } — true = стена есть
+    function generateMaze(cols, rows) {
+        const grid = Array.from({ length: rows }, () =>
+            Array.from({ length: cols }, () => ({
+                top: true, right: true, bottom: true, left: true, visited: false
+            }))
+        );
+
+        const stack = [];
+        let current = { x: 0, y: 0 };
+        grid[0][0].visited = true;
+        stack.push(current);
+
+        const dirs = [
+            { dx: 0, dy: -1, wall: 'top',    opp: 'bottom' },
+            { dx: 1, dy: 0,  wall: 'right',  opp: 'left'   },
+            { dx: 0, dy: 1,  wall: 'bottom', opp: 'top'    },
+            { dx: -1, dy: 0, wall: 'left',   opp: 'right'  }
+        ];
+
+        while (stack.length > 0) {
+            const c = stack[stack.length - 1];
+            const neighbors = [];
+            for (const d of dirs) {
+                const nx = c.x + d.dx, ny = c.y + d.dy;
+                if (nx >= 0 && nx < cols && ny >= 0 && ny < rows && !grid[ny][nx].visited) {
+                    neighbors.push({ nx, ny, d });
+                }
+            }
+            if (neighbors.length === 0) {
+                stack.pop();
+            } else {
+                const { nx, ny, d } = neighbors[Math.floor(Math.random() * neighbors.length)];
+                grid[c.y][c.x][d.wall] = false;
+                grid[ny][nx][d.opp] = false;
+                grid[ny][nx].visited = true;
+                stack.push({ x: nx, y: ny });
+            }
+        }
+        return grid;
+    }
+
+    const grid = generateMaze(COLS, ROWS);
+
+    // ---- Преобразование стен сетки в прямоугольники для отрисовки и коллизий ----
+    const WALLS = [];
+
+    // Внешний периметр
+    WALLS.push([0, 0, COLS * CELL + WALL, WALL]);                 // сверху
+    WALLS.push([0, ROWS * CELL, COLS * CELL + WALL, WALL]);       // снизу
+    WALLS.push([0, 0, WALL, ROWS * CELL + WALL]);                 // слева
+    WALLS.push([COLS * CELL, 0, WALL, ROWS * CELL + WALL]);       // справа
+
+    // Внутренние стены
+    for (let y = 0; y < ROWS; y++) {
+        for (let x = 0; x < COLS; x++) {
+            const c = grid[y][x];
+            const px = x * CELL + WALL;
+            const py = y * CELL + WALL;
+
+            if (c.right && x < COLS - 1) {
+                WALLS.push([(x + 1) * CELL, y * CELL + WALL, WALL, CELL]);
+            }
+            if (c.bottom && y < ROWS - 1) {
+                WALLS.push([x * CELL + WALL, (y + 1) * CELL, CELL, WALL]);
+            }
+        }
+    }
+
+    maze.style.width  = (COLS * CELL + WALL) + 'px';
+    maze.style.height = (ROWS * CELL + WALL) + 'px';
+
+    for (const [wx, wy, ww, wh] of WALLS) {
+        const el = document.createElement('div');
+        el.className = 'wall';
+        el.style.left = wx + 'px';
+        el.style.top = wy + 'px';
+        el.style.width = ww + 'px';
+        el.style.height = wh + 'px';
+        maze.appendChild(el);
+    }
+
+    // Старт — левая нижняя клетка, финиш — правая верхняя
+    const startCell = { x: 0, y: ROWS - 1 };
+    const finCell   = { x: COLS - 1, y: 0 };
+
+    let x = startCell.x * CELL + WALL + (CELL - PLAYER) / 2;
+    let y = startCell.y * CELL + WALL + (CELL - PLAYER) / 2;
+
+    home.style.left = (finCell.x * CELL + WALL + (CELL - 22) / 2) + 'px';
+    home.style.top  = (finCell.y * CELL + WALL + (CELL - 22) / 2) + 'px';
+
+    function draw() {
+        player.style.left = x + 'px';
+        player.style.top  = y + 'px';
+    }
+
+    function intersects(ax, ay, aw, ah, bx, by, bw, bh) {
+        return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
+    }
+
+    function canMove(nx, ny) {
+        if (nx < WALL || ny < WALL) return false;
+        if (nx + PLAYER > COLS * CELL || ny + PLAYER > ROWS * CELL) return false;
+        for (const [wx, wy, ww, wh] of WALLS) {
+            if (intersects(nx, ny, PLAYER, PLAYER, wx, wy, ww, wh)) return false;
+        }
+        return true;
+    }
+
+    function move(dx, dy) {
+        if (canMove(x + dx, y)) x += dx;
+        if (canMove(x, y + dy)) y += dy;
+        draw();
+        checkFinish();
+    }
+
+    function checkFinish() {
+        const r1 = player.getBoundingClientRect();
+        const r2 = home.getBoundingClientRect();
+        const overlap = !(r1.right < r2.left || r1.left > r2.right ||
+                          r1.bottom < r2.top || r1.top > r2.bottom);
+        if (overlap) {
+            setTimeout(() => {
+                alert('Вы прошли лабиринт!');
+                location.reload();
+            }, 50);
+        }
+    }
+
+    document.getElementById('bu').addEventListener('click', () => move(0, -STEP));
+    document.getElementById('bd').addEventListener('click', () => move(0,  STEP));
+    document.getElementById('bl').addEventListener('click', () => move(-STEP, 0));
+    document.getElementById('br').addEventListener('click', () => move( STEP, 0));
+
+    document.addEventListener('keydown', (e) => {
+        switch (e.key) {
+            case 'ArrowUp':    e.preventDefault(); move(0, -STEP); break;
+            case 'ArrowDown':  e.preventDefault(); move(0,  STEP); break;
+            case 'ArrowLeft':  e.preventDefault(); move(-STEP, 0); break;
+            case 'ArrowRight': e.preventDefault(); move( STEP, 0); break;
+        }
+    });
+
+    draw();
+</script>
+</body>
+</html>
