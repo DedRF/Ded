@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Последняя смена — Корпус 13</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game">
+    <canvas id="screen" aria-label="Игровой экран"></canvas>
+    <div class="vignette"></div>
+    <div class="noise"></div>
+
+    <header class="hud">
+      <div class="brand"><span class="red-dot"></span> КОРПУС <b>13</b></div>
+      <div class="hud-right">
+        <div class="stat"><span>ВРЕМЯ</span><b id="clock">02:47</b></div>
+        <div class="stat"><span>ЗАРЯД</span><b id="battery">100%</b></div>
+        <div class="stat"><span>РАССУДОК</span><b id="sanity">100%</b></div>
+      </div>
+    </header>
+
+    <section class="objective">
+      <div class="eyebrow">ТЕКУЩАЯ ЦЕЛЬ</div>
+      <div id="objectiveText">Найти три предохранителя: 0 / 3</div>
+      <div class="objective-line"><i id="objectiveProgress"></i></div>
+    </section>
+
+    <div class="crosshair"><i></i><b></b></div>
+    <div id="prompt" class="prompt"></div>
+    <div id="message" class="message"></div>
+    <div id="damage" class="damage"></div>
+
+    <aside class="inventory">
+      <div class="inventory-title">ИНВЕНТАРЬ</div>
+      <div class="inventory-slots">
+        <div class="slot" id="slotFuse"><span>▣</span><small>ПРЕДОХРАНИТЕЛИ</small><b id="fuseCount">0/3</b></div>
+        <div class="slot" id="slotKey"><span>⚿</span><small>КЛЮЧ-КАРТА</small><b id="keyState">НЕТ</b></div>
+        <div class="slot" id="slotNote"><span>▤</span><small>ЗАПИСКА</small><b id="noteState">НЕТ</b></div>
+      </div>
+    </aside>
+
+    <div class="bottom-hint">W A S D — движение <span>•</span> МЫШЬ — обзор <span>•</span> E — взаимодействие <span>•</span> F — фонарик <span>•</span> SHIFT — бег</div>
+
+    <section id="startScreen" class="overlay visible">
+      <div class="panel title-panel">
+        <div class="overline">ПСИХОЛОГИЧЕСКИЙ ХОРРОР • 1998</div>
+        <h1>ПОСЛЕДНЯЯ<br><em>СМЕНА</em></h1>
+        <div class="subtitle">КОРПУС 13</div>
+        <p class="story">Ночная смена в заброшенной больнице должна была стать лёгкой подработкой. Но кто-то оставил свет включённым в палате №13.</p>
+        <div class="warning">⚠ ВНИМАНИЕ: В ЭТОМ ЗДАНИИ ВЫ НЕ ОДНИ</div>
+        <button id="startBtn" class="primary">НАЧАТЬ СМЕНУ <span>→</span></button>
+        <div class="controls-note">Рекомендуется играть в наушниках. Используйте мышь для осмотра.</div>
+      </div>
+    </section>
+
+    <section id="noteScreen" class="overlay">
+      <div class="panel note-panel">
+        <div class="overline">НАЙДЕННЫЙ ДОКУМЕНТ • 17.11.1998</div>
+        <h2 id="noteTitle">Записка дежурного</h2>
+        <p id="noteBody"></p>
+        <button id="closeNote" class="secondary">ЗАКРЫТЬ [E]</button>
+      </div>
+    </section>
+
+    <section id="endScreen" class="overlay">
+      <div class="panel end-panel">
+        <div class="overline" id="endOverline">СМЕНА ОКОНЧЕНА</div>
+        <h2 id="endTitle">ТЫ ВЫБРАЛСЯ</h2>
+        <p id="endText"></p>
+        <div class="end-stats" id="endStats"></div>
+        <button id="restartBtn" class="primary">ИГРАТЬ СНОВА ↻</button>
+      </div>
+    </section>
+
+    <div class="pause-label" id="pauseLabel">ПАУЗА <small>Нажмите ESC, чтобы продолжить</small></div>
+    <div class="toast" id="toast"></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
